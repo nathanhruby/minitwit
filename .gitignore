@@ -1,2 +1,4 @@
 minitwit.db
 .eggs/
+.vagrant
+builds

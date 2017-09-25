@@ -1,0 +1,15 @@
+[Unit]
+Description=minitwit
+After=network.target
+
+[Service]
+User={{ minitwit_system_user }}
+Group={{ minitwit_system_group }}
+Environment=FLASK_APP={{ minitwit_flask_appname }}
+Environment=MINITWIT_SETTINGS={{ minitwit_config_dir }}/minitwit.conf
+ExecStart={{ minitwit_venv_dir }}/bin/flask run --host=0.0.0.0
+WorkingDirectory={{ minitwit_src_dir }}
+Type=simple
+
+[Install]
+WantedBy=default.target
