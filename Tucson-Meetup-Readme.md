@@ -1,4 +1,4 @@
-## The Situation:
+## The Situation
 
 Your CEO just wrote a quick "Twitter like" application.  Since he's heard you
 mention DevOps before, he's handed the code off to you to get ready for the
@@ -25,12 +25,14 @@ by Vagrant which can use VirtualBox as a VM provider to provide easy to
 - Download and Install Vagrant
   - https://www.vagrantup.com/downloads.html
 - On your system add the centos/7 base box
-    # vagrant box add centos/7
+```
+vagrant box add centos/7
+```
 - If you don't have git and ansible install them now as well:
   - git: https://git-scm.com/downloads
   - ansible: http://docs.ansible.com/ansible/latest/intro_installation.html
 - clone the following repo ahead of time:
-    # https://github.com/nathanhruby/minitwit.git
+  - https://github.com/nathanhruby/minitwit.git
   Feel free to fork this if you want to push tags and changes.
 
 - Note for Mac Users: VirtualBox and Vagrant are both in Homebrew cask, git
@@ -72,16 +74,20 @@ a small playbook to do this for us.
 
 - Create a inventory file with "localhost" in it.
 - Add a git tag with the version
-  # git tag 1.0.0
+```
+git tag 1.0.0
+```
 - Make a new ansible playbook file named "make-build.yml" in the top of the
   repo.  This should have one play consisting of two tasks
   - The first task should create a directory at the top of the repo for the
     build artifacts to go into, call this directory "builds"
   - The second task should generate the build artifact from git using a command
     like this (substitute the version in teh sample below for the version you created in step 1)
-    # git archive --prefix=minitwit-1.2.3/ -o builds/minitwit-1.2.3.zip 1.2.3
+    `git archive --prefix=minitwit-1.2.3/ -o builds/minitwit-1.2.3.zip 1.2.3`
 - Run the playbook to generate the build:
-  # ansible-playbook -i local-inv make-build.yml
+```
+ansible-playbook -i local-inv make-build.yml
+```
 
 Important things to think about:
 - How can the playbook prompt at runtime for the correct version to build?
@@ -109,7 +115,7 @@ We need to create new playbook, let's call it site.yml, that will do the followi
   - with yum, install: epel-release
   - with yum, install: python-virtualenv, python-pip, zip, unzip
   - with user, make sure there is a `minitwit_system_user` user (group will be created automatically)
-  - with file, make sure required directories (*_dir variables) are present and owned by correct user/group
+  - with file, make sure required directories (_dir variables) are present and owned by correct user/group
     - you may want to put these dirs in the system user's homedir
   - with template, put configs/minitwit.service.j2 into destination /etc/systemd/system/minitwit.service
     - with a notify, reload systemd using "systemctl daemon-reload" if the service file changes
@@ -118,7 +124,9 @@ We need to create new playbook, let's call it site.yml, that will do the followi
 You can uncomment the ansible section in the Vagrantfile in order to run
 ansible playbook against the vagrant vm.  Please lave the "extra_vars" section
 commented until the third task.  After which you can run ansible with
-  # vagrant provision
+```
+vagrant provision
+```
 You can run this as often as you need
 
 At the end of this section a subsequent run of ansible should yield no
