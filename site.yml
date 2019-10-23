@@ -1,6 +1,41 @@
 ---
 - name: Welcome to Ansible
   hosts: minitwit
+  become: yes
+  roles:
+    - { name: docker-ce }
   tasks:
-    - name: Hellow World
-      shell: echo "Hello World!"
+    - name: Create minitwit db dir
+      file:
+        path: /var/lib/minitwit
+        state: directory
+
+    - name: copy minitwit service config
+      copy:
+        src: configs/minitwit-docker.service
+        dest: /etc/systemd/system
+    
+    - name: start minitwit
+      service:
+        name: minitwit-docker
+        state: started
+    
+    - name: wait for minitwit
+      wait_for:
+        port: 5000
+        delay: 2
+        timeout: 5
+      retries: 3
+
+    - name: check minitwit
+      uri:
+        url: http://localhost:5000
+        return_content: True
+      register: minitwit_index_data
+      changed_when: False
+    
+    - name: check minitwit output
+      assert:
+        that:
+          - "'public timeline' in minitwit_index_data.content"
+

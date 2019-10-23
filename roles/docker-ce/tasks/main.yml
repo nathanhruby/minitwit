@@ -1,0 +1,33 @@
+---
+- name: install docker-ce pre-reqs
+  yum:
+    name: "{{ packages }}"
+    state: installed
+  vars:
+    packages:
+      - yum-utils 
+      - device-mapper-persistent-data
+      - lvm2
+
+- name: install docker-ce yum repo
+  command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  args:
+    creates: /etc/yum.repos.d/docker-ce.repo
+
+- name: install docker-ce
+  yum:
+    name: "{{ packages }}"
+    state: installed
+  vars:
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+  register: docker_ce_install
+
+- name: start docker
+  service:
+    name: docker
+    state: started
+  when: docker_ce_install is changed
+
