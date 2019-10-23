@@ -1,0 +1,8 @@
+Tucson-Meetup-Readme.md
+Vagrantfile
+Dockerfile
+.vagrant
+.git
+.eggs
+*.egg-info
+db
