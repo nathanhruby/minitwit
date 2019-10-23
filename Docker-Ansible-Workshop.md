@@ -54,6 +54,7 @@ pages you will need for these exercises:
 - loops: http://docs.ansible.com/ansible/latest/playbooks_loops.html
 - conditionals: http://docs.ansible.com/ansible/latest/playbooks_conditionals.html
 - become: http://docs.ansible.com/ansible/latest/become.html
+- roles: https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html
 
 ### Modules
 
