@@ -5,7 +5,7 @@
     state: installed
   vars:
     packages:
-      - yum-utils 
+      - yum-utils
       - device-mapper-persistent-data
       - lvm2
 
