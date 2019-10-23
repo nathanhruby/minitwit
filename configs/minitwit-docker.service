@@ -1,0 +1,12 @@
+[Unit]
+Description=minitwit-docker
+Requires=docker.service
+
+[Service]
+ExecStartPre=/bin/docker pull quay.io/nhruby/minitwit:latest
+ExecStart=/bin/docker run --rm --name=minitwit -p 5000:5000 -v /var/lib/minitwit:/app/db quay.io/nhruby/minitwit:latest
+ExecStop=/bin/docker stop minitwit
+ExecReload=/bin/docker restart minitwit
+
+[Install]
+WantedBy=multi-user.target
